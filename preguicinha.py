@@ -1,31 +1,51 @@
-import os
-import re
+from os import listdir, rename
+from re import search
+from pathlib import Path
+
 BASE_PATH = "../"
+
+video_types = [
+    ".mp4", ".mkv", ".avi", ".mov", ".wmv", ".flv", ".webm",
+    ".mpg", ".mpeg", ".m4v", ".3gp", ".3g2", ".ts", ".mts", ".m2ts",
+    ".ogv", ".vob", ".drc", ".mng", ".drp", ".rm", ".rmvb", ".viv",
+    ".asf", ".amv", ".divx", ".xvid", ".yuv", ".bik", ".braw", ".cam",
+    ".dat", ".dv", ".dvr-ms", ".asf", ".mxf", ".roq", ".nsv", ".svi",
+    ".smk", ".swf", ".braw", ".mng", ".ogm"
+]
+
+caption_types = [
+    ".srt", ".sub", ".ass", ".ssa", ".smi", ".sami", ".vtt",
+    ".sbv", ".scc", ".dfxp", ".ttml", ".itt", ".stl", ".ttxt",
+    ".usf", ".rt", ".cap", ".ult", ".cin", ".aqt", ".jss"
+]
+
+id_rule = r"(S\d{2}E\d{2})"
+
 def preguicinha():
+    files = listdir(BASE_PATH)
+    videos = get_video_files(files)
+    captions = get_caption_files(files)
+    rename_captions(videos, captions)
 
-    file_list = os.listdir(BASE_PATH)
+def get_video_files(files):
+    return [f for f in files if any(f.lower().endswith(ext) for ext in video_types)]
 
-    video_files = get_video_files(file_list)
+def get_caption_files(files):
+    return [f for f in files if any(f.lower().endswith(ext) for ext in caption_types)]
 
-    change_srt(video_files, file_list)
+def get_video_id(video):
+    return search(id_rule, video).group(1)
 
-    video_types = [".mp4", ".avi", ".mkv"]
+def rename_captions(videos, captions):
+    for video in videos:
+        video_id = get_video_id(video)
+        video_extension = Path(video).suffix
 
-def get_video_files(file_list):
-    video_files = []
-
-    for file in file_list:
-        if file.endswith('.mp4'):
-            video_files.append(file)
-
-    return video_files
-
-def change_srt(mp4_list, file_list):
-    for video_file in mp4_list:
-        video_index = re.search(r'(S\d{2}E\d{2})', video_file).group(1)
-
-        for srt_file in file_list:
-            if srt_file.endswith('.srt') and video_index in srt_file:
-                os.rename(f"{BASE_PATH}{srt_file}", f"{BASE_PATH}{video_file}".replace('.mp4', '.srt'))
+        for caption in captions:
+            if video_id in caption:
+                caption_extension = Path(caption).suffix
+                new_caption_name = f"{BASE_PATH}{video}".replace(video_extension, caption_extension)
+                current_caption_name = f"{BASE_PATH}{caption}"
+                rename(current_caption_name, new_caption_name)
 
 preguicinha()
