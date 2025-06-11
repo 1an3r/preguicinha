@@ -2,7 +2,7 @@
 A python script that takes a folder with any number of .mp4 (or any video extensions) and .srt (or any caption extensions) and copy the name of the video file to the correspondent caption file based on the following RegEx = s\d{2}e\d{2}.
 
 ## MAKE A BACK UP, THIS IS NOT DATA SAFE BY ANY MEANS
-I am not responsible for any dataloss made by the usage of this program, you were warned.
+#### I am not responsible for any dataloss made by the usage of this program, you were warned.
 
 ## HOW TO USE IT
 #### Ensure you have python installed:<br>
