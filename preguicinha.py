@@ -1,7 +1,6 @@
 from os import listdir, rename
 from re import search
 from pathlib import Path
-from tkinter import Tk
 from tkinter.filedialog import askdirectory
 
 path = askdirectory()
