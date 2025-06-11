@@ -40,11 +40,10 @@ def get_video_id(video):
 def rename_captions(videos, captions):
     for video in videos:
         video_id = get_video_id(video)
-        video_extension = Path(video).suffix
 
         for caption in captions:
             if video_id in caption:
-                new_caption_name = f"{BASE_PATH}\\{video}".replace(video_extension, Path(caption).suffix)
+                new_caption_name = f"{BASE_PATH}\\{video}".replace(Path(video).suffix, Path(caption).suffix)
                 current_caption_name = f"{BASE_PATH}\\{caption}"
                 rename(current_caption_name, new_caption_name)
 
