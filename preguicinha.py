@@ -1,9 +1,9 @@
 import os
 import re
-
+BASE_PATH = "../"
 def preguicinha():
 
-    file_list = os.listdir('.')
+    file_list = os.listdir(BASE_PATH)
 
     video_files = get_video_files(file_list)
 
@@ -26,6 +26,6 @@ def change_srt(mp4_list, file_list):
 
         for srt_file in file_list:
             if srt_file.endswith('.srt') and video_index in srt_file:
-                os.rename(srt_file, video_file.replace('.mp4', '.srt'))
+                os.rename(f"{BASE_PATH}{srt_file}", f"{BASE_PATH}{video_file}".replace('.mp4', '.srt'))
 
 preguicinha()
