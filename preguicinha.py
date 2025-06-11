@@ -1,8 +1,11 @@
 from os import listdir, rename
 from re import search
 from pathlib import Path
+from tkinter import Tk
+from tkinter.filedialog import askdirectory
 
-BASE_PATH = "../"
+path = askdirectory()
+BASE_PATH = path
 
 video_types = [
     ".mp4", ".mkv", ".avi", ".mov", ".wmv", ".flv", ".webm",
@@ -21,11 +24,13 @@ caption_types = [
 
 id_rule = r"(S\d{2}E\d{2})"
 
-def preguicinha():
+def main():
     files = listdir(BASE_PATH)
     videos = get_video_files(files)
     captions = get_caption_files(files)
     rename_captions(videos, captions)
+
+
 
 def get_video_files(files):
     return [f for f in files if any(f.lower().endswith(ext) for ext in video_types)]
@@ -44,8 +49,8 @@ def rename_captions(videos, captions):
         for caption in captions:
             if video_id in caption:
                 caption_extension = Path(caption).suffix
-                new_caption_name = f"{BASE_PATH}{video}".replace(video_extension, caption_extension)
-                current_caption_name = f"{BASE_PATH}{caption}"
+                new_caption_name = f"{BASE_PATH}\\{video}".replace(video_extension, caption_extension)
+                current_caption_name = f"{BASE_PATH}\\{caption}"
                 rename(current_caption_name, new_caption_name)
 
-preguicinha()
+main()
