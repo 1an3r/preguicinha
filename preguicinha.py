@@ -26,17 +26,13 @@ id_rule = r"(S\d{2}E\d{2})"
 
 def main():
     files = listdir(BASE_PATH)
-    videos = get_video_files(files)
-    captions = get_caption_files(files)
+    videos = get_files_by_extension(files, video_types)
+    captions = get_files_by_extension(files, caption_types)
+
     rename_captions(videos, captions)
 
-
-
-def get_video_files(files):
-    return [f for f in files if any(f.lower().endswith(ext) for ext in video_types)]
-
-def get_caption_files(files):
-    return [f for f in files if any(f.lower().endswith(ext) for ext in caption_types)]
+def get_files_by_extension(files, extensions):
+    return [f for f in files if any(f.lower().endswith(ext) for ext in extensions)]
 
 def get_video_id(video):
     return search(id_rule, video).group(1)
@@ -48,8 +44,7 @@ def rename_captions(videos, captions):
 
         for caption in captions:
             if video_id in caption:
-                caption_extension = Path(caption).suffix
-                new_caption_name = f"{BASE_PATH}\\{video}".replace(video_extension, caption_extension)
+                new_caption_name = f"{BASE_PATH}\\{video}".replace(video_extension, Path(caption).suffix)
                 current_caption_name = f"{BASE_PATH}\\{caption}"
                 rename(current_caption_name, new_caption_name)
 
